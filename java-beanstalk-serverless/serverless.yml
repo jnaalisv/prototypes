@@ -10,3 +10,48 @@ functions:
     handler: handler.helloFromLambda
     events:
       - http: GET hello-lambda
+
+resources:
+  Resources:
+    BackendApplication:
+      Type: "AWS::ElasticBeanstalk::Application"
+      Properties:
+        Description: "Spring Boot Backend"
+
+    BackendApplicationVersion:
+      Type: "AWS::ElasticBeanstalk::ApplicationVersion"
+      Properties:
+        ApplicationName:
+          Ref: "BackendApplication"
+        SourceBundle:
+          S3Bucket: "${cf:JavaDeployment.JavaDeploymentBucketName}"
+          S3Key: "backend.jar"
+
+    BackendApplicationConfigurationTemplate:
+      Type: "AWS::ElasticBeanstalk::ConfigurationTemplate"
+      Properties:
+        ApplicationName:
+          Ref: "BackendApplication"
+        Description: "A Spring Boot application config template"
+        OptionSettings:
+          - Namespace: "aws:autoscaling:asg"
+            OptionName: "MinSize"
+            Value: "1"
+          - Namespace: "aws:autoscaling:asg"
+            OptionName: "MaxSize"
+            Value: "2"
+          - Namespace: "aws:elasticbeanstalk:environment"
+            OptionName: "EnvironmentType"
+            Value: "LoadBalanced"
+        SolutionStackName: "64bit Amazon Linux 2017.09 v2.6.5 running Java 8"
+
+    BackendApplicationEnvironment:
+      Type: "AWS::ElasticBeanstalk::Environment"
+      Properties:
+        ApplicationName:
+          Ref: "BackendApplication"
+        EnvironmentName: "BeanstalkAndServerlessEnvironment"
+        TemplateName:
+          Ref: "BackendApplicationConfigurationTemplate"
+        VersionLabel:
+          Ref: "BackendApplicationVersion"

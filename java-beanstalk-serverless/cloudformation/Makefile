@@ -1,16 +1,21 @@
+include ../aws.env
+
+check-region:
+	test -n "$(AWS_REGION)" || (echo "AWS_REGION must be defined in ../aws.env"; exit 1)
+
 .PHONY: stack events describe list clean
 
-stack:
-	aws cloudformation create-stack --stack-name JavaDeploymentBucket --capabilities "CAPABILITY_NAMED_IAM" --template-body file://create-java-bucket.yaml
+stack: check-region
+	aws --region $(AWS_REGION) cloudformation create-stack --stack-name JavaDeployment --capabilities "CAPABILITY_NAMED_IAM" --template-body file://create-java-bucket.yaml
 
 events:
-	aws cloudformation describe-stack-events --stack-name JavaDeploymentBucket
+	aws --region $(AWS_REGION) cloudformation describe-stack-events --stack-name JavaDeployment
 
 describe:
-	aws cloudformation describe-stacks --stack-name JavaDeploymentBucket
+	aws --region $(AWS_REGION) cloudformation describe-stacks --stack-name JavaDeployment
 
 list:
-	aws cloudformation list-stacks
+	aws --region $(AWS_REGION) cloudformation list-stacks
 
 clean:
-	aws cloudformation delete-stack --stack-name JavaDeploymentBucket
+	aws --region $(AWS_REGION) cloudformation delete-stack --stack-name JavaDeployment
