@@ -1,0 +1,12 @@
+
+service: java-beanstalk-serverless
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+functions:
+  hello:
+    handler: handler.helloFromLambda
+    events:
+      - http: GET hello-lambda
