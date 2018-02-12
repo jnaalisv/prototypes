@@ -1,0 +1,15 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "EB deployment bucket"
+Resources:
+  JavaDeploymentBucket:
+    Type: "AWS::S3::Bucket"
+
+Outputs:
+  JavaDeploymentBucketName:
+    Value: !Ref "JavaDeploymentBucket"
+  JavaDeploymentBucketURL:
+    Value: !GetAtt [JavaDeploymentBucket, WebsiteURL]
+    Description: URL for website hosted on S3
+  JavaDeploymentBucketSecureURL:
+    Value: !Join ['', ['https://', !GetAtt [JavaDeploymentBucket, DomainName]]]
+    Description: secure url to JavaDeploymentBucket
