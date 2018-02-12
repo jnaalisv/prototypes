@@ -4,3 +4,8 @@ jspm_packages
 
 # Serverless directories
 .serverless
+
+# gradle stuff
+.gradle
+/build
+
