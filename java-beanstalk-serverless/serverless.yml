@@ -6,7 +6,8 @@ provider:
   runtime: nodejs6.10
 
 functions:
-  hello:
+  helloBeanstalk:
+    name: HelloBeanstalk
     handler: handler.helloFromLambda
     events:
       - http: GET hello-lambda
@@ -40,12 +41,25 @@ resources:
           - Namespace: "aws:autoscaling:asg"
             OptionName: "MaxSize"
             Value: "2"
+
           - Namespace: "aws:elasticbeanstalk:environment"
             OptionName: "EnvironmentType"
             Value: "LoadBalanced"
+
           - Namespace: "aws:elasticbeanstalk:application:environment"
             OptionName: "LAMBDA"
-            Value: "www.amazon.com"
+            Value:
+              Fn::GetAtt: [HelloBeanstalkLambdaFunction, Arn]
+
+          - Namespace: "aws:elasticbeanstalk:application:environment"
+            OptionName: "SERVICE_URL"
+            Value:
+              Fn::Join:
+                - ""
+                - - "https://"
+                  - Ref: "ApiGatewayRestApi"
+                  - ".execute-api.us-east-1.amazonaws.com/dev"
+
         SolutionStackName: "64bit Amazon Linux 2017.09 v2.6.5 running Java 8"
 
     BackendApplicationEnvironment:
@@ -58,3 +72,9 @@ resources:
           Ref: "BackendApplicationConfigurationTemplate"
         VersionLabel:
           Ref: "BackendApplicationVersion"
+
+  Outputs:
+    BackendEndpointUrl:
+      Description: Endpoint for the backend application
+      Value:
+        Fn::GetAtt: [BackendApplicationEnvironment, EndpointURL]
