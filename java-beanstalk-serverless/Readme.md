@@ -18,8 +18,15 @@ $ make buildAndPublish
 $ sls deploy -v
 ```
 
-invoke lambda with
+Deployed lambda will be available at 
 ```
-$ sls invoke local --function helloBeanstalk --data '{"a":"bar"}'
+https://${SLS_API_GATEWAY}.execute-api.${AWS_REGION}.amazonaws.com/{SLS_STAGE}/hello-lambda
 ```
 
+and the beanstalk application at
+```
+http://${AWS_BEANSTALK_APP}.${AWS_REGION}.elb.amazonaws.com/params
+```
+```
+http://${AWS_BEANSTALK_APP}.${AWS_REGION}.elb.amazonaws.com/hello
+```
