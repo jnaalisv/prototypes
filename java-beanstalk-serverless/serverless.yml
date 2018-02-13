@@ -43,6 +43,9 @@ resources:
           - Namespace: "aws:elasticbeanstalk:environment"
             OptionName: "EnvironmentType"
             Value: "LoadBalanced"
+          - Namespace: "aws:elasticbeanstalk:application:environment"
+            OptionName: "LAMBDA"
+            Value: "www.amazon.com"
         SolutionStackName: "64bit Amazon Linux 2017.09 v2.6.5 running Java 8"
 
     BackendApplicationEnvironment:

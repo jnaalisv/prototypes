@@ -16,7 +16,7 @@ public class HelloController {
 
     private final String lambdaUrl;
 
-    public HelloController(@Value("${lambdaurl}") String lambdaUrl) {
+    public HelloController(@Value("${LAMBDA}") String lambdaUrl) {
         logger.info("lambdaUrl {}", lambdaUrl);
         logger.info("lambdaurl from System.env {}", System.getenv("lambdaurl"));
         this.lambdaUrl = lambdaUrl;
