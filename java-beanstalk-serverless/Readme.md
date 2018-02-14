@@ -30,3 +30,6 @@ http://${AWS_BEANSTALK_APP}.${AWS_REGION}.elb.amazonaws.com/params
 ```
 http://${AWS_BEANSTALK_APP}.${AWS_REGION}.elb.amazonaws.com/hello
 ```
+
+#### TODO
+- parametrize ```JavaDeployment```-stack name, now its hard coded to ```./serverless.yml```, ```./cloudformation/Makefile``` and ```./Makefile```
