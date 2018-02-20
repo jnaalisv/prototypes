@@ -12,6 +12,15 @@ functions:
     events:
       - http: GET hello-lambda
 
+  requiresBeanstalk:
+    name: RequiresBeanstalk
+    handler: handler.requiresBeanstalk
+    events:
+      - http: GET requires-beanstalk
+    environment:
+      BEANSTALK_APP:
+        Fn::GetAtt: [BackendApplicationEnvironment, EndpointURL]
+
 resources:
   Resources:
     BackendApplication:
